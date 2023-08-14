@@ -1,0 +1,76 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+ }
+.hero{
+    width: 90%;
+    height: 100vh;
+    position: relative;
+    margin: 10px auto;
+}
+.btn-box{
+    display: flex;
+    border-bottom: 1px solid #ccc;
+
+}
+.btn-box button{
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    margin-right: 50px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.wrapper{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 670px;
+    background: #031547;
+    border-radius: 5px;
+    padding: 25px 25px 30px;
+    transition: 0.5s;
+   
+}
+.wrapper h2{
+    color: #4671EA;
+    font-size: 28px;
+    text-align: center;
+}
+.wrapper textarea{
+    width: 100%;
+    height: 59px;
+    padding: 15px;
+    outline: none;
+    resize: none;
+    font-size: 16px;
+    margin-top: 20px;
+    border-color: #bfbfbf;
+    border-radius: 5px;
+
+}
+textarea :is(:focus, :valid){
+    border-width: 2px;
+    padding: 14px;
+    border-color: #4671EA;
+}
+textarea::-webkit-scrollbar{
+    width: 0px;
+}
+.home-container{
+    visibility: visible;
+    background: #53565f;
+}
+.msg-container{
+    visibility: hidden;
+    background: #68529c;
+    
+}
+
+.container{
+    visibility:hidden;
+}
