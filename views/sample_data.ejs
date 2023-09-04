@@ -50,7 +50,7 @@
      
             
         <div class="container">
-            <h1 class="mt-1 mb-4 text-center text-primary"><b><%= title %></b></h1>
+            <h1 class="text-center text-primary"><b><%= title %></b></h1>
 
             <span id="message"></span>
             <div class="card">
@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col col-sm-9">client Details</div>
                         <div class="col col-sm-3" >
-                            <button type="button"  id="msg" class="btn btn-success btn-sm" >messages</button>
+                            <button type="button"  id="selct" class="btn btn-success btn-sm" >messages</button>
                             <button type="button" id="add_data" class="btn btn-success btn-sm float-end">Add</button>
                         </div>
                     </div>
@@ -155,6 +155,7 @@
 <script>
 
 $(document).ready(function(){
+    // clientList = [];
 
     load_data();
     function extractDate(dateString) {
@@ -171,7 +172,8 @@ $(document).ready(function(){
         var day = parts[2];
 
         // Return the date in the format "YYYY-MM-DD".
-        return day[0]+day[1] + "-" + month + "-" +year;
+        // return day[0]+day[1] + "-" + month + "-" +year;
+        return year+"-"+ month +"-" +day[0]+day[1];
 
       
         }
@@ -186,6 +188,8 @@ $(document).ready(function(){
             dataType : "JSON",
             success:function(data)
             {
+                
+                clientList = data.data;
                 var html = '';
 
                 if(data.data.length > 0)
@@ -197,14 +201,14 @@ $(document).ready(function(){
                         <tr>
                             
                             <td><input type ="checkbox" class = 'checkbox'  name = 'row-check' data-id="`+data.data[count].id+`"/></td>
-                            <td>`+data.data[count].id+`</td>
+                            <td >`+data.data[count].id+`</td>
                             <td>`+data.data[count].firstname+`</td>
                             <td>`+data.data[count].lastname+`</td>
                             <td>`+data.data[count].phoneNumber+`</td>
                             <td>`+extractDate(data.data[count].StartSubscrition)+`</td>
                             <td>`+data.data[count].email+`</td>
                             <td>`+data.data[count].duration+`</td>
-                            <td><button type="button" class="btn btn-warning btn-sm edit" data-id="`+data.data[count].id+`">Edit</button>&nbsp;<button type="button" class="btn btn-danger btn-sm delete" data-id="`+data.data[count].id+`">Delete</button></td>
+                            <td><button type="button" class="btn btn-warning btn-sm edit"  data-id="`+data.data[count].id+`">Edit</button>&nbsp;<button type="button" class="btn btn-danger btn-sm delete" data-id="`+data.data[count].id+`">Delete</button></td>
                         </tr>
                         `;
                       
@@ -262,32 +266,28 @@ $(document).ready(function(){
         $(".container").css("visibility", "visible");
         
     });
+   
+        
 
-    $('#msg').click(function(){
+    $('#selct').click(function(){
         // Get the checkboxes with the class "checkbox"
-        // var checkboxes = $(".checkbox");
+        var checkboxes = $(".checkbox");
 
-        // // Filter the checkboxes that are checked
-        // var checkedCheckboxes = checkboxes.filter(":checked");
-        // if(checkedCheckboxes > 0){
-         
-        //     $.each(checkedCheckboxes, function() {
-        //         var data = $(this).data("id");
-        //         console.log(data);
-        //         $('#action_modal2').modal('show');
-        //         });
-                $('table').find(':checked').each(function() {
-                var data = [];
-                $(this).each(function() {
-                    data.push($(this).data('id'));
-                });
+        // Filter the checkboxes that are checked
+        var checkedCheckboxes = checkboxes.filter(":checked");
+        if(checkedCheckboxes.length > 0){
+    
+            $.each(checkedCheckboxes, function() {
+                const data = $(this).data("id");
                 console.log(data);
-                });
-
+                $('#action_modal2').modal('show');
+                const result = clientList.filter((client) =>client.id ===data);
+                console.log(result)
+            });
+               
+          
          
-        // }
-
-        // Loop through the checked checkboxes and get their data
+        }
      
 
     });
@@ -342,7 +342,7 @@ $(document).ready(function(){
         });
 
     });
-
+// edit client details
     $(document).on('click', '.edit', function(){
 
         var id = $(this).data('id');
@@ -363,17 +363,17 @@ $(document).ready(function(){
             success:function(data)
             {
                 $('#first_name').val(data.firstname);
-                console.log(data.firstname);
+                
                 $('#last_name').val(data.lastname);
                 $('#tel').val(data.phoneNumber);
-                $('#SoS').val(data.StartSubscrition);
+                $('#SoS').val(extractDate(data.StartSubscrition)); 
                 $('#email').val(data.email); 
                 $('#duration').val(data.duration);
             }
         });
 
     });
-
+//deleting client from the list
     $(document).on('click', '.delete', function(){
 
         var id = $(this).data('id');
@@ -397,11 +397,6 @@ $(document).ready(function(){
         }
 
     });
-
-// patch start
-
-
-
     
 });
 
