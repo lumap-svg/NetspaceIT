@@ -1,7 +1,7 @@
 var express = require('express');
 
 var router = express.Router();
-
+require("dotenv").config();
 var database = require('../database');
 
 router.get("/", function(request, response, next){
@@ -126,5 +126,20 @@ router.post("/action", function(request, response, next){
 	}
 
 });
+function notification(detail){
+	const Africastalking = require('africastalking');
+const AT = Africastalking({username:process.env.APP_USERNAME,apiKey:process.env.API_KEY}).SMS;
+
+const sendSMS = async() => {
+    const output = await AT.send({
+        to:detail.clients,
+        message: detail.msg
+    });
+    console.log({output});
+};
+
+sendSMS();
+console.log("message sent")
+}
 
 module.exports = router;
